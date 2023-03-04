@@ -1,0 +1,131 @@
+/*Sa se scrie un program care tine evidenta cladirilor dintr-un cartier
+pt fiecare cladire se cunoaste numele proprietarului, numarul imobilului,numarul de camere
+Sa se creeze un meniu interactiv care sa contina urm operatii:
+0.Iesire
+1.Adaugarea unei noi cladiri in cartier (o cladire este considerata citita corect daca numele prop. incepe cu lit mare si in rest contine litere mici
+si numarul imob. este dif de numerele imobilelor care se afla deja in cartier)
+2.Afisarea tuturor cladirilor din cartier in ordine crescatoare dupa numarul de camere
+3.Sa se stearga toate cladirile care au numarul imob divizibil cu 5.
+*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct cladire {
+	char nume[20];
+	int nrimob;
+	int nrcam;
+}Clad;
+void stergere(Clad *c,int *n){
+	int i,j;
+	for (i = 0; i <= *n; i++) {
+		if (((c + i)->nrimob) % 5 == 0) {
+			for (j = i; j < *n; j++)
+				*(c + j) = *(c + j + 1);
+			(*n)--;
+			i--;
+		}
+	}
+}
+int sortare(Clad *c,int n) {
+	int i,j;
+	Clad aux;
+	for (i = 0; i < n; i++) {
+		for(j=i+1;j<=n;j++)
+			if ((c + i)->nrcam > (c + j)->nrcam) {
+				aux = *(c + i);
+				*(c + i) = *(c + j);
+				*(c + j) = aux;
+			}
+	}
+
+}
+int verificarenume(char sir[20]) {
+	int i;
+	if (!(sir[0] >= 'A' && sir[0] <= 'Z'))
+		return 0;
+	for (i = 1; i < strlen(sir); i++)
+		if (!(sir[i] >= 'a' && sir[i] <= 'z'))
+			return 0;
+	return 1;
+}
+int verificarenr(Clad *c, int n, int nrc) {
+	int i,ok;
+	ok = 1;
+	if (n == 0)
+		return ok;
+	else {
+		for (i = 0; i < n; i++) {
+			if (((c + i)->nrimob) == nrc)
+				ok = 0;
+
+		}
+		return ok;
+	}
+	
+}
+void citire(Clad *c, int*n) {
+	(*n)++;
+	int k;
+	k = 0;
+	do {
+		printf("Nume:");//scanf("s",(c + *n)->nume);
+		if (k == 0) {
+			getchar();
+			k++;
+		}
+		gets((c + *n)->nume);
+	} while (!verificarenume((c + *n)->nume));
+	do {
+		printf("Numarul imobilului:");
+		scanf("%d", &(c + *n)->nrimob);
+	} while (!verificarenr(c, *n, (c + *n)->nrimob));
+	printf("Numar de camere");
+	scanf("%d",&(c+*n)->nrcam);
+
+}
+
+void afisare(Clad *c,int n){
+	printf("%s  ", (c + n)->nume);
+	printf("%d  ", (c + n)->nrimob);
+	printf("%d\n", (c + n)->nrcam);
+	
+}
+
+int main()
+{
+	int i,n;
+	int opt;
+	Clad c[30];
+	n = -1;
+	do {
+		printf("\nMeniu:\n");
+		printf("0.Iesire\n");
+		printf("1.Adaugarea unei noi cladiri in cartier\n");
+		printf("2.Afisarea tuturor cladirilor din cartier\n");
+		printf("3.Sa se stearga toate cladirile care au numarul imob divizibil cu 5.\n");
+		printf("Optiunea:");
+		scanf("%d", &opt);
+		switch (opt) {
+		case 0:
+			exit(0);
+		case 1:
+			citire(c,&n);
+			break;
+		case 2:
+			sortare(c, n);
+			for (i = 0; i <= n; i++)
+				afisare(c,i);
+			
+			break;
+		case 3:
+			stergere(c,&n);
+			break;
+
+		default:
+			break;
+		}
+	} while (1);
+	system("pause");
+	return(0);
+}

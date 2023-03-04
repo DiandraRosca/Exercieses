@@ -1,0 +1,135 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+
+void citire(char cuv[])
+{
+	printf("cuv=");
+	scanf("%s", cuv);
+}
+
+void afisare(char cuv[])
+{
+	printf("cuv e=");  //sau cuv e=%s,cuv
+	puts(cuv);   //special de citire pt un sir de cuv,dar merge si pt un cuv
+}
+
+void vocale(char cuv[])
+{
+	int i,vocale = 0;
+	for (i = 0; i < strlen(cuv); i++)
+		if ((cuv[i] == 'a') || (cuv[i] == 'e') || (cuv[i] == 'i') || (cuv[i] == 'o') || (cuv[i] == 'u') ||
+			(cuv[i] == 'A') || (cuv[i] == 'E') || (cuv[i] == 'I') || (cuv[i] == 'O') || (cuv[i] == 'U'))
+			vocale++;
+	printf("\n in sir sunt %d vocale", vocale);
+}
+
+void sortare(char cuv[])
+{
+	int i;
+	int ok;
+	char aux;
+	do
+	{
+		ok = 1;
+		for ( i = 0; i < strlen(cuv); i++)
+		{
+			if (cuv[i - 1] > cuv[i])
+			{
+				aux = cuv[i];
+				cuv[i] = cuv[i - 1];
+				cuv[i - 1] = aux;
+				ok = 0;
+			}
+		}
+	} while (!ok);
+	printf("cuv sortat e=");
+	puts(cuv);
+}
+
+void comparaCuv(char cuv[],char sir[])
+{
+	printf("sir2=");
+	scanf("%s", sir);
+	if (strcmp(cuv, sir) == 0) {
+		printf("Cuvintele sunt egale.\n");
+	}
+	else {
+		printf("Cuvintele nu sunt egale.\n");
+	}
+
+}
+
+//void comparaFaraFCT(char cuv[], char sir[])
+//{
+//	int i, k = 1;
+//	printf("al doilea sir este=");
+//	scanf("%s", &sir);
+//	if (strlen(cuv) == strlen(sir)) //pt ca daca introduceam abc si abcd dadeau la fel, trebuie verificata si lungimea
+//	{
+//		for (i = 1; i < strlen(sir); i++)
+//			if (cuv[i] != sir[i])
+//				k = 0;
+//	}
+//	else
+//		k = 0;
+//	if (k == 1) //if(k)
+//		printf("sirurile sunt egale");
+//	else
+//		printf("sirurile nu sunt egale");
+//}
+
+
+
+int main()
+{
+	int opt;
+	int i,n;
+	char cuv[20];
+	char sir[20];
+
+	while (1)
+	{
+		system("Color 0B");
+		printf("\n1.citirea cuv\n");
+		printf("2.af cuv\n");
+		printf("3.numarati cate vocale are\n");
+		printf("4.sortarea alfabetica\n");
+		printf("5. se mai cit un sir de caract de la tast,verif dc cele 2 siruri sunt egale(strcmp)\n");
+		printf("6.se mai cit un sir de caract de la tast,verif dc cele 2 siruri sunt egale(fara fct)\n");
+		printf("0.iesire\n");
+		printf("opt ta e=");
+		scanf("%d", &opt);
+		switch (opt)
+		{
+		case 0:
+			exit(0);
+		case 1:
+			citire(cuv);
+			break;
+		case 2:
+			afisare(cuv);
+			break;
+		case 3:
+			vocale(cuv);
+			break;
+		case 4:
+			sortare(cuv);
+			break;
+		case 5:
+			comparaCuv(cuv, sir);
+			break;
+		case 6:
+			//comparaFaraFCT(cuv, sir);
+			break;
+		case 7:
+			break;
+		default:printf("opt grs");
+			break;
+		}
+
+	}
+
+	return 0;
+}

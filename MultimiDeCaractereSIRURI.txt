@@ -1,0 +1,272 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+void afisare_caractere(char *multime, int dimensiune) {
+	printf("Caracterele din multime sunt: ");
+	for (int i = 0; i < dimensiune; i++){
+		printf("%c", multime[i]);
+	}
+	printf("\n");
+}
+void afisare_caractere_ordonata(char *multime, int dimensiune) {
+	char temp;
+	for (int i = 0; i < dimensiune - 1; i++) {
+		for (int j = i + 1; j < dimensiune; j++) {
+			if (multime[i] > multime[j]) {
+				temp = multime[i];
+				multime[i] = multime[j];
+				multime[j] = temp;
+			}
+		}
+	}
+	printf("Caracterele din multime ordonate alfabetic sunt: ");
+	for (int i = 0; i < dimensiune; i++) {
+		printf("%c ", multime[i]);
+	}
+	printf("\n");
+}
+void afisare_caractere_ordonate_invers(char *multime, int dimensiune) {
+	char temp;
+	for (int i = 0; i < dimensiune - 1; i++) {
+		for (int j = i + 1; j < dimensiune; j++) {
+			if (multime[i] < multime[j]) {
+				temp = multime[i];
+				multime[i] = multime[j];
+				multime[j] = temp;
+			}
+		}
+	}
+	printf("Caracterele din multime ordonate invers alfabetic sunt: ");
+	for (int i = 0; i < dimensiune; i++) {
+		printf("%c ", multime[i]);
+	}
+	printf("\n");
+}
+
+int numar_vocale(char *multime, int dimensiune) {
+	int nr_vocale = 0;
+	for (int i = 0; i < dimensiune; i++) {
+		switch (multime[i]) {
+		case 'a':
+		case 'e':
+		case 'i':
+		case 'o':
+		case 'u':
+			nr_vocale++;
+			break;
+		case 'A':
+		case 'E':
+		case 'I':
+		case 'O':
+		case 'U':
+			nr_vocale++;
+			break;
+		default:
+			break;
+		}
+	}
+	return nr_vocale;
+}
+void copiere_ascii(char *multime, int dimensiune) {
+	int **ascii = malloc(dimensiune * sizeof(int *));
+
+	for (int i = 0; i < dimensiune; i++) {
+		ascii[i] = malloc(sizeof(int));
+		*ascii[i] = (int)multime[i];
+	}
+
+	printf("Reprezentari ASCII zecimale ale caracterelor:\n");
+	for (int i = 0; i < dimensiune; i++) {
+		printf("%d ", *ascii[i]);
+		free(ascii[i]);
+	}
+
+	free(ascii);
+}
+char gaseste_caracterul_cel_mai_frecvent(char *multime, int lungime) {
+	int frecventa[26] = { 0 }; // initializam frecventa tuturor caracterelor cu 0
+	char caracter_cel_mai_frecvent;
+	int max_frecventa = 0;
+
+	for (int i = 0; i < lungime; i++) {
+		if (multime[i] >= 'a' && multime[i] <= 'z') { // verificam daca caracterul este o litera mica
+			frecventa[multime[i] - 'a']++; // crestem frecventa caracterului
+			if (frecventa[multime[i] - 'a'] > max_frecventa) { // verificam daca acest caracter apare mai des decat cel mai frecvent pana acum
+				max_frecventa = frecventa[multime[i] - 'a'];
+				caracter_cel_mai_frecvent = multime[i];
+			}
+		}
+	}
+
+	return caracter_cel_mai_frecvent;
+}
+void diagonala_secundara_matrice(char *multime, int dimensiune) {
+	// cream matricea
+	char **matrice = (char**)malloc(dimensiune * sizeof(char*));
+	int i, j;
+
+	// alocam memorie pentru fiecare linie in parte
+	for (i = 0; i < dimensiune; i++) {
+		matrice[i] = (char*)malloc(dimensiune * sizeof(char));
+	}
+
+	// initializam matricea cu caracterul '*'
+	for (i = 0; i < dimensiune; i++) {
+		for (j = 0; j < dimensiune; j++) {
+			matrice[i][j] = '*';
+		}
+	}
+
+	// punem caracterele de pe diagonala secundara
+	for (i = 0; i < dimensiune; i++) {
+		matrice[i][dimensiune - i - 1] = multime[i];
+	}
+
+	// afisam matricea
+	for (i = 0; i < dimensiune; i++) {
+		for (j = 0; j < dimensiune; j++) {
+			printf("%c ", matrice[i][j]);
+		}
+		printf("\n");
+	}
+
+	// eliberam memoria alocata
+	for (i = 0; i < dimensiune; i++) {
+		free(matrice[i]);
+	}
+	free(matrice);
+}
+
+void formare_cuvant_pare(char *multime, int lungime) {
+	char *cuvant = malloc((lungime / 2 + 1) * sizeof(char)); // alocare spatiu pentru cuvant (maxim lungime/2 caractere)
+	int pozitie_cuvant = 0; // pozitia curenta din cuvant
+
+	for (int i = 0; i < lungime; i += 2) { // parcurgem doar caracterele de pe pozitii pare
+		cuvant[pozitie_cuvant] = multime[i];
+		pozitie_cuvant++;
+	}
+
+	cuvant[pozitie_cuvant] = '\0'; // adaugam caracterul terminator de sir
+
+	printf("Cuvantul format din caracterele de pe pozitii pare este: %s\n", cuvant);
+
+	free(cuvant); // eliberam memoria alocata pentru cuvant
+}
+void stergeUltimulCaracter(char *multime, int *n) {
+	if (*n > 0) {
+		// Realocam memorie pentru a reduce dimensiunea cu o unitate
+		multime = (char*)realloc(multime, (*n - 1) * sizeof(char));
+		if (multime == NULL) {
+			printf("Eroare la realocarea memoriei.\n");
+			return;
+		}
+		// Afisam caracterul sters si multimea ramasa
+		printf("Ultimul caracter sters: %c\n", multime[*n - 1]);
+		printf("Multimea ramasa: ");
+		for (int i = 0; i < *n - 1; i++) {
+			printf("%c ", multime[i]);
+		}
+		printf("\n");
+		// Actualizam dimensiunea multimii
+		*n -= 1;
+	}
+	else {
+		printf("Multimea este goala.\n");
+	}
+}
+
+
+
+void suma_ascii_in_binar(char *multime, int dimensiune) {
+	int suma_ascii = 0;
+
+	for (int i = 0; i < dimensiune; i++) {
+		suma_ascii += (int)multime[i];
+	}
+
+	printf("Suma reprezentarilor ASCII zecimale ale caracterelor: %d\n", suma_ascii);
+
+	printf("Suma in baza 2: ");
+	for (int i = 31; i >= 0; i--) {
+		if (suma_ascii & (1 << i)) {
+			printf("1");
+		}
+		else {
+			printf("0");
+		}
+	}
+	printf("\n");
+}
+
+int main() {
+
+	int option = 0;
+	char* multime = NULL;
+	int dimensiune;
+
+	printf("Introduceti dimensiunea multimii: ");
+	scanf("%d", &dimensiune);
+
+	// Alocam dinamic memorie pentru multime
+	multime = (char*)malloc(dimensiune * sizeof(char));
+	if (multime == NULL) {
+		printf("Eroare la alocarea de memorie!");
+		return 1;
+	}
+
+	printf("Introduceti caracterele multimii (fara spatii): ");
+	scanf("%s", multime);
+	do {
+		printf("\nMeniu:\n");
+		printf("1. Afisare caracterelor din multime\n");
+		printf("2. Afisare caracterelor in ordine alfabetica\n");
+		printf("3. Afisare caracterelor in ordine invers\n");
+		printf("4. Numarul de vocale\n");
+		printf("5. Reprezentari ASCII\n");
+		printf("6.Suma in baza2 ale reprezentarilor ASCII\n");
+		printf("7. Ce caractere apare cel mai des\n");
+		printf("8. Diagonala secundara - caracterle mulmitii iar pe restul *\n");
+		printf("9. Cuvant cu caractere de pe pozitii pare\n");
+		printf("10. Se sterge ultimul caracter din multime\n");
+		printf("Optiunea aleasa: ");
+		scanf("%d", &option);
+
+		switch (option)
+		{
+		case 1:
+			printf("Multimea de caractere introdusa este: %s\n", multime);
+			break;
+		case 2:
+			afisare_caractere_ordonata(multime, dimensiune);
+			break;
+		case 3:
+			afisare_caractere_ordonate_invers(multime, dimensiune);
+			break;
+		case 4:
+			printf("Numarul de vocale din multime este: %d\n", numar_vocale(multime, dimensiune));
+			break;
+		case 5:
+			copiere_ascii(multime, dimensiune);
+			break;
+		case 6:
+			break;
+		case 7:
+			printf("Caracterul cel mai frecvent din multime este: %c\n", gaseste_caracterul_cel_mai_frecvent(multime, dimensiune));
+			break;
+		case 8:
+			diagonala_secundara_matrice(multime, dimensiune);
+			break;
+		case 9:
+			diagonala_secundara_matrice(multime, dimensiune);
+			break;
+		case 10:
+			break;
+
+		default:
+			break;
+		}
+
+	} while (option != 4);
+}

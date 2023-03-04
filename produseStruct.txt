@@ -1,0 +1,368 @@
+//sa se tina evidenra produselor dintr un magazin:numeProdus,codProdus,pret,nrBucati,dataExpirarii
+//sa va folosi vectori de structuri
+//!!!!!obs!!!!!
+//codul produsului e dat automat ca fiind inversul produsului
+//numele produslui e considerat corect citit daca are doar lit mici
+//data e citita sub forma zi luna an, fiind de tip vector.cu 3 elem, se va considera ca anul e 2024, iar ziua  e data intre 1-31, iar lunile intre 1-12
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+typedef struct Produs
+{
+	char numeP[30];
+        char codP[30];
+	int pret;
+	int nrBuc;
+	int data[2];  //vector cu zi luna an
+
+}P;
+
+
+void formaBinar(int nr)
+{
+	int i;
+	for ( i = 31; i >=0; i--)
+	{
+		if ((nr >> 1) & 1) { printf("1"); }
+		else { printf("0"); }
+	}
+	printf("\n");
+	
+}
+void sortare(P *p, int n)
+{
+	int k,i;
+	P aux;
+	do {
+		k = 1;
+		for(i=0;i<=n;i++)
+			if ((p + i-1)->pret > (p + i)->pret)
+			{
+
+				aux = *(p+ i);
+				*(p + i) = *(p + i - 1); //valorile lor se schimba nu adresele
+				*(p + i - 1) = aux;
+				k = 0;
+			}
+	} while (!k);
+}
+int produsul(int nr)
+{
+	int p = 1;
+	while (nr != 0)
+	{
+		if (nr % 10 == 0);
+		else p = p * (nr % 10);
+		nr = nr / 10;
+	}
+	return p;
+}
+char *invers(char *S) {
+	char aux[30]; //var de tip char
+	int i, j=0;
+	for (i = strlen(S) - 1; i >= 0; i--)
+	{
+		aux[j] = S[i];
+      		j++;
+	}
+	aux[j] = '\0';
+	return aux;
+}
+void citire(P *p, int *n)
+{
+	(*n)++;
+	do {
+		printf("nume prod=");  scanf("%s", (p + *n)->numeP);
+	} while (!validareLit((p+ *n)->numeP));
+	strcpy((p + *n)->codP, invers((p + *n)->numeP));
+	printf("cod produs=%s \n", (p + *n)->codP);
+	printf("pret=");  scanf("%d", &(p + *n)->pret);
+	printf("nr buc=");  scanf("%d", &(p + *n)->nrBuc);
+	
+	do {
+		printf("ziua expirarii=");  scanf("%d", &(p + *n)->data[0]); //primu elem din vector
+		if ((p + *n)->data[0] >= 1 && (p + *n)->data[0] <= 31) break;
+	} while (1);
+
+	do {
+		printf("luna exp=");  scanf("%d", &(p + *n)->data[1]);
+		if ((p + *n)->data[1] >= 1 && (p + *n)->data[1] <= 12) break;
+	} while (1);
+
+	(p + *n)->data[2] = 2024;
+	printf("anul expirari este=%d\n",(p+*n)->data[2]);  
+}
+void afisare(P * p, int n)
+{
+	int i;
+	for (i = 0; i <= n; i++) // de aceea <=n , avem n+1 elem
+	{
+		printf("\nnume prod=%s  ", (p + i)->numeP);
+		printf("codul prod=%s ", (p + i)->codP);
+		printf("pret=%d ", (p + i)->pret);
+		printf("nr buc=%d ", (p + i)->nrBuc);
+		printf("data prod=%d , %d , %d", (p + i)->data[0], (p + i)->data[1], (p + i)->data[2]);
+		
+	}
+
+}
+int validareLit(char *S)  
+{
+	int i;
+	for ( i = 0; i < strlen(S); i++)   //lungimea vectorului de sir =strlen,trecem prin toate elem din sir
+	{
+		if (S[i] >= 'a' && S[i] <= 'z'); // ';' fiindca nu face nmc dc se intampla asta
+		else
+		{
+			return 0; //dc face parte din asta
+			break;
+		}
+	}
+	if (i == strlen(S))  return 1; //i ajunge la final dc nu intalnesc alte caractere
+}
+void afisarePretMic(P *p, int n, int a)
+{
+	int i;
+		for (i = 0; i <= n; i++) // de aceea <=n , avem n+1 elem
+			if ((p + i)->pret < a)
+			{
+				{
+					printf("\nnume prod=%s  ", (p + i)->numeP);
+					printf("codul prod=%s ", (p + i)->codP);
+					printf("pret=%d ", (p + i)->pret);
+					printf("nr buc=%d ", (p + i)->nrBuc);
+					printf("data prod=%d , %d , %d", (p + i)->data[0], (p + i)->data[1], (p + i)->data[2]);
+				}
+			}
+}
+void nrPar(P *p,int n)
+{
+	
+	int i;
+	for (i = 0; i <= n; i++)
+	{
+		if (strlen((p + i)->numeP) % 2 == 0)
+		{
+			printf("\nnume prod=%s  ", (p + i)->numeP);
+			printf("codul prod=%s ", (p + i)->codP);
+			printf("pret=%d ", (p + i)->pret);
+			printf("nr buc=%d ", (p + i)->nrBuc);
+			printf("data prod=%d , %d , %d", (p + i)->data[0], (p + i)->data[1], (p + i)->data[2]);
+		}
+	}
+}
+void afisareNume(P *p, int n)
+{
+	int i;
+	char nume[30];
+	printf("introduceti numele produsului cautat= ");
+	scanf("%s", nume);
+	for (i = 0; i <= n; i++)
+	{
+		if (strcmp((p + i)->numeP, nume)==0)
+		{
+			printf("\nnume prod=%s  ", (p + i)->numeP);
+			printf("codul prod=%s ", (p + i)->codP);
+			printf("pret=%d ", (p + i)->pret);
+			printf("nr buc=%d ", (p + i)->nrBuc);
+			printf("data prod=%d , %d , %d", (p + i)->data[0], (p + i)->data[1], (p + i)->data[2]);
+			break; //primul gasit primul servit
+		}
+	}
+}
+void afisareVectorProdus(P *p, int n)
+{
+	int i;
+	int *v;
+	v = (int*)malloc((n+1) * sizeof(int)); //aloc din fiindca nuj cate produse vom avea
+	if (v == NULL)
+	{
+		printf("ex o eroare la aloc de mem");
+		exit(0);
+	}
+	for ( i = 0; i <= n; i++)
+	{
+		v[i] = produsul((p + i)->nrBuc);
+	}
+	for (i = 0; i <= n; i++)
+	{
+		printf(" %d", v[i]);
+	}
+	free(v);
+}
+void copiereVectorCod(P *p, int n)
+{
+	int i;
+	char V[100][100];
+	//V = (char*)malloc((n + 1) * sizeof(char));// n+1 pt ca atatea masini avem, fiindca n =-1 in main //aloc mem fiindca nuj cate masini vor fi citte
+	//if (V == NULL)
+	//{
+	//	printf("ex o eroare la aloc de mem");
+	//	exit(0);
+	//}
+	for (i = 0; i <= n; i++)
+	{
+		strcpy(V[i], (p + i)->codP);
+	}
+	for (i = 0; i <= n; i++)
+	{
+		printf("%s", V[i]);
+	}
+	//free(V);
+}
+void copierePret(P *p, int n)
+{
+	int *S;
+	int i;
+
+	S = (int*)malloc((n + 1) * sizeof(int));// n+1 pt ca atatea masini avem, fiindca n =-1 in main //aloc mem fiindca nuj cate masini vor fi citte
+	if (S == NULL)
+	   {
+		printf("ex o eroare la aloc de mem");
+		exit(0);
+	   }
+	for (i = 0; i <= n; i++)
+	   {
+		S[i] = (p + i)->pret;
+	   }
+	printf("vectorul de preturi nesortat= ");
+	   for (i = 0; i <= n; i++)
+	   {
+		printf("%d ", S[i]);
+	   }
+	printf("\nvectorul de preturi sortat= ");
+	sortare(S, n);
+	  for (i = 0; i <= n; i++)
+	   {
+		printf("%d ", S[i]);
+	   }
+
+	free(S);
+}
+void litMare(P *p, int n)
+{
+	int i;
+	for ( i = 0; i <=n; i++)
+	{
+		if ((p + i)->codP[0] == 'a' || (p + i)->codP[0]== 'e' || (p + i)->codP[0]== 'i' || (p + i)->codP[0]== 'o' ||(p + i)->codP[0] == 'u')
+		{
+			(p + i)->codP[0] = (p + i)->codP[0] - 32;
+		}
+	}
+	
+}
+void afisareBinarBucati(P *p, int n)
+{
+	int i;
+	for (i = 0; i <= n; i++) // de aceea <=n , avem n+1 elem
+	{
+		if ((p + i)->nrBuc < 100)
+		{
+			formaBinar((p + i)->nrBuc);
+		}
+	}
+}
+void stergere(P *p, int *n,char *nume)
+{
+	int i, j;
+	for (i = 0; i <= *n; i++)
+				if ((p + i)->numeP ==nume)
+				{
+					for ( j = i; j <= *n-1; j++)
+						*(p + j) = *(p + j + 1);
+						break; //fiindca vrem sa stergem un singur produs
+				}
+			*n = *n - 1; //noua valoare lui n 
+			i--;
+
+}
+
+int main()
+{
+	system("color 9");
+	int n = -1,opt;
+	P produse[100];
+	int pret;
+	char s[20];
+	char nume[30];
+	while (1)
+	{
+		printf("\n0.iesire\n");
+		printf("1.citire\n");
+		printf("2.afisare\n");
+		printf("3.af produse cu un pret mai mic decat cel dat de la tast\n");
+		printf("4.af toate produsele ce au lungimea egala cu un nr par\n");
+		printf("5. af primului produs = cu un nume dat de la tast\n");
+		printf("6.sa se realizeze prodsului cifrelor fiecarui nr de bucati a produselor,apoi sa se copieze fiec pr intr un vct si sa se af, dc se va intalni o cifra = cu aceasta nu se va lua in considerare\n");
+		printf("7.copierea tutuor codurilor produselor intr un vector de sir de caract+af\n");
+		printf("8.copierea preturilor intr un vector in ord cresc\n");
+		printf("9.sa se transf prima lit de la codul produselor in lit mare, dc aceasta e vocala\n");
+		printf("10.sa se af forma binara a nr de bucati ale produselor care au nr de bucati<100\n");
+		printf("11. sa se af toate produsele ce urmeaza sa exp in 10 zile\n");
+		printf("12.sa se puna pe ultm rand pe o matr de caract,de ordin dat de nr de produse,primul caracter din fiec nume de produs,iar pe restul elem se va pune '.' \n");
+		printf("13. stabilirea unui nou pret dc clientul doreste,astfel  utilizajortul va decide procentajul cu care se va scumpi prod\n");
+		printf("14. sa se stearga un produs zis de utilizator prin nume\n");
+		printf("\ndati opt=");
+		scanf("%d", &opt);
+		switch (opt)
+		{
+
+		case 0:
+			exit(0);
+		case 1:
+			citire(produse, &n);   //vectorul produse
+			break;
+		case 2:
+			afisare(produse, n);
+			break;
+		case 3:
+			printf("dati un pret=");
+			scanf("%d", &pret);
+			afisarePretMic(produse, n,pret);
+			break;
+		case 4:
+			nrPar(produse, n);
+
+			break;
+		case 5:
+			afisareNume(produse, n);
+			break;
+		case 6:
+			afisareVectorProdus(produse, n);
+			break;
+		case 7:
+			copiereVectorCod(produse, n);
+			break;
+		case 8:
+			copierePret(produse, n);
+			break;
+		case 9:
+			litMare(produse, n);
+			afisare(produse, n);
+			break;
+		case 10:
+			afisareBinarBucati(produse, n); //nu merge bn
+			
+			break;
+		case 11:
+			break;
+		case 12:
+			break;
+		case 13:
+			break;
+		case 14:
+			printf("dati un produs de sters=");
+			scanf("%s", nume);
+			stergere(produse, &n, nume);
+			afisare(produse, n);
+			break;
+		default:printf("opt grs");
+			break;
+		}
+	}
+
+	system("pause");
+	return 0;
+
+}

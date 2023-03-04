@@ -1,0 +1,100 @@
+#include<stdio.h>
+#include<stdlib.h>
+//op biti
+
+
+void baza2(int n)  //void afisareformabinara
+{
+	int i;
+	for (i = 31; i >= 0; i--)
+	{
+		if ((n >> i) & 1)
+			printf("1");
+		else printf("0");
+	}
+}
+
+void putere(int n)
+{
+	int i,contor=0;
+	for (i = 31; i >= 0; i--)
+		if ((n >> i) & 1)
+			contor++;
+		if (contor == 1)
+			printf("nr e o put de a lui 2");
+		else
+			printf("nu e o put de a lui 2");
+	
+}
+
+//void puterecuunu(int n)
+//{
+//	int i, contor = 0;
+//	for (i = 31; i >= 0; i--)
+//		if ((n >> i) & 1)
+//			contor++;
+//	if ((contor == 1) && (n & 1) == 1)
+//		printf("nr e mai mare cu o put de a lui 2");
+//	else
+//		printf("nr nu e mai mare cu 1 decat o put de a lui 2");
+//
+//}
+
+void bitipe1(int n)
+{
+	int i, contor = 0;
+	for (i = 31; i >= 1; i--)          //fara bitul de paritate
+		if ((n >> i) & 1)
+			contor++;
+	if ((contor == 1) && (n & 1) == 1)
+		printf("nr e mai mare cu 1 decat o put de a lui 2");
+	else
+		printf("nr nu e mai mare cu 1 decat o put de a lui 2");
+}
+
+int main()
+{
+	int opt;
+	int i, n;
+	printf("n =");
+	scanf("%d", &n);
+	do
+	{
+		system("color A");
+		printf("\n0.iesire\n");
+		printf("1.af nr in baza 2\n");
+		printf("2.af mesaj dc nr e = cu o put a lui 2\n");
+		printf("3.af mes dc nr e > cu 1 decat o put a lui 2\n");
+		printf("4.af nr de biti pe 1\n");
+		printf("5. af nr de biti pe 0\n");
+		printf("6.af poz a primului bit(din st) cu val 1 a nr in cazul in care nr e poz \n");
+		printf("7. af nr de octeti necesari pt vreprezentarea nr , in cazul in care nr e poz \n");
+		printf("dati opt=");
+		scanf("%d", &opt);
+		switch (opt)
+		{
+		case 0:
+			exit(0);
+		case 1:
+			baza2(n);
+			break;
+		case 2:
+			putere(n);
+			break;
+
+		case 3:
+			bitipe1(n);
+			//puterecuunu(n);
+			break;
+		case 4:
+			break;
+		default:printf("opt grs");
+			break;
+		}
+	} while (1);
+
+
+	system("pause");
+	return 0;
+
+}

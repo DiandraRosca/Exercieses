@@ -1,0 +1,166 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+
+
+void baza2(int n)
+{
+	int i;
+	for (i = 31; i >= 0; i--)
+	{
+		if ((n >> i) & 1)
+			printf("1");
+		else printf("0");
+	}
+}
+
+void putere(int n)
+{
+	int i,contor=0;
+	for (i = 31; i >= 0; i--)
+		if ((n >> i) & 1)
+			contor++;
+		if (contor == 1)
+			printf("nr e o put de a lui 2");
+		else
+			printf("nu e o put de a lui 2");
+	
+}
+
+//void puterecuunu(int n)
+//{
+//	int i, contor = 0;
+//	for (i = 31; i >= 0; i--)
+//		if ((n >> i) & 1)
+//			contor++;
+//	if ((contor == 1) && (n & 1) == 1)
+//		printf("nr e mai mare cu o put de a lui 2");
+//	else
+//		printf("nr nu e mai mare cu 1 decat o put de a lui 2");
+//
+//}
+
+void bitipe1(int n)
+{
+	int i, contor = 0;
+	for (i = 31; i >= 1; i--)          //fara bitul de paritate
+		if ((n >> i) & 1)
+			contor++;
+	if ((contor == 1) && (n & 1) == 1)
+		printf("nr e mai mare cu 1 decat o put de a lui 2");
+	else
+		printf("nr nu e mai mare cu 1 decat o put de a lui 2");
+}
+
+void par(int n)
+{
+	if ((n & 1) == 1)
+	{
+		printf("nr e impar\n");
+	}
+	else printf("nu e par\n");
+
+}
+
+void pozneg(int n)
+{
+	if (((n >> 31) & 1) == 0)
+	{
+		printf("nr e poz\n");
+	}
+	else
+		printf("nr e neg\n");
+
+}
+
+void valoareaBitDePePoz(int n)
+{
+	int poz;
+	printf("poz= ");
+	scanf("%d", &poz);
+	if (((n >> (poz - 1)) & 1) == 1)
+		printf("val bitului de pe poz %d e 1\n", poz);
+	else
+		printf("val bit dp poz %d e 0\n", poz);
+}
+
+void divizibil(int n)
+{
+	int put;
+	printf("dati put=");
+	scanf("%d", &put);
+	if (n % 3 == 0)
+	{
+		printf("rezultatul este =%g\n", pow(n, put));
+	}
+	else
+		printf("nu e div cu 3\n");
+
+}
+void cfUnit(int n)
+{
+	int x;
+	x=n % 10;
+	printf("cf unitatilor este=%d\n", x);
+}
+
+int main()
+{
+	int opt;
+	int i, n;
+	printf("n =");
+	scanf("%d", &n);
+	do
+	{
+		system("color A");
+		printf("\n0.iesire\n");
+		printf("1.af nr in baza 2\n");
+		printf("2.af mesaj dc nr e = cu o put a lui 2\n");
+		printf("3.af mes dc nr e > cu 1 decat o put a lui 2\n");
+		printf("4.af par/imp folosind opt pe biti\n");
+		printf("5.poz/neg pe biti\n");
+		printf("6.pt nr citit de la tast afisati valoarea bitului dp o pozitia data de utilizator/\n");
+		printf("7.af dc nr citit e divizibil cu 3,iar daca e sa se ridice la o putere precizata dew utiliz\n");
+		printf("8. af cifra unitatilor\n ");
+		printf("dati opt=");
+		scanf("%d", &opt);
+		switch (opt)
+		{
+		case 0:
+			exit(0);
+		case 1:
+			baza2(n);
+			break;
+		case 2:
+			putere(n);
+			break;
+
+		case 3:
+			bitipe1(n);
+			//puterecuunu(n);
+			break;
+		case 4:
+			par(n);
+			break;
+		case 5:
+			pozneg(n);
+			break;
+		case 6:
+			valoareaBitDePePoz(n);
+			break;
+		case 7:
+			divizibil(n);
+			break;
+		case 8:
+			cfUnit(n);
+			break;
+		default:printf("opt grs");
+			break;
+		}
+	} while (1);
+
+
+	system("pause");
+	return 0;
+
+}

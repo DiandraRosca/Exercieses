@@ -1,0 +1,129 @@
+/*un program in care se citeste un sir de caractere care exprima un cuvant apoi sa se realizeze un meniu interactiv cu urm optiuni
+0.iesire
+1. af cuv
+2. tranformarea lit mici in alea mari
+3. transf lit mari in lit mici
+4. copiera sirului invers intr unu nou
+5. sortarea sirului in ord alfabetica
+6. stergerea tuturor caracterol egale cu 'a' din sir
+obs:se va valida sirul citit ai. sa fie compus doar din lit mici, in cazul in care nu e citit
+corect se va citi din nou*/
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int main()
+{
+
+	int j=0,i,k=0,ok=0,aux;
+	char s[20],sir[20];
+	enum meniu{iesire,afisare,transformare,transformare2,copiere,sortare,stergere}opt;
+	getchar();
+	printf("sirul e=");
+	scanf("%s", &s);
+
+
+	//getchar();
+	//i = 0;
+	//do {
+	//	printf("sirul e=");
+	//	scanf("%s", &s); //gets(s)
+	//	for ( i = 0; s[i] !='\0' ; i++)
+	//	{
+	//		if(s[i] <= 'a' && s[i] >= 'z')
+	//		k++;
+	//		else
+	//		{
+	//			k = 0;
+	//			break;
+	//		}
+	//	}
+	//} while (k!=strlen(s));
+	printf("aveti urm optiuni\n");
+	while (1)
+	{
+		system("Color 0B");
+		printf("\n0.iesire\n");
+		printf("1.afisare\n");
+		printf("2. tranformarea lit mici in alea mari\n");
+		printf("3. transf lit mari in lit mici\n");
+		printf("4. copiera sirului invers intr unu nou\n");
+		printf("5. sortarea sirului in ord alfabetica\n");
+		printf("6. stergerea tuturor caracterol egale cu 'a' din sir\n");
+		printf("opt ta e=");
+		scanf("%d", &opt);
+		switch (opt)
+		{
+		case iesire:
+			exit(0);
+		case afisare:
+			printf("%s", s); //puts(s)
+			break;
+		case transformare:
+			ok = 1;
+			for (i = 0; i < strlen(s); i++)
+			{
+				s[i] = s[i] - 32; //s[i]=toupper(s[i]); -#include<ctype>
+			}
+			printf("noul sir e=%s", s);
+			break;
+		case transformare2:
+			if (ok == 0)
+				printf("apasa 2 ");
+			else {
+				for (i = 0; i < strlen(s); i++)
+				{
+					s[i] = s[i] + 32; //s[i]=tolwr(s[i]); -#include<ctype>
+				}
+				printf("noul sir e=%s", s);
+				}
+			break;
+			break;
+		case copiere:
+			if (ok)
+				printf("apasa 2");
+			else {
+				for (i = strlen(s)-1; i >= 0; i--)
+				{
+						sir[j] = s[i];
+						j++;
+				}
+				sir[j] = '\0';
+				printf("cuv scris invers e= %s", sir);
+				}
+			break;
+		case sortare:
+			for ( i = 0; i < strlen(s)-1; i++)
+			{
+				for (j = i + 1; j < strlen(s); j++)
+				{
+					aux = s[i];
+					s[i] = s[j];
+					s[j] = aux;
+				}
+			}
+			printf("%s", s);
+			break;
+		case stergere:
+			for (i = 0; i < strlen(s) ; i++)
+			{
+				if (s[i] == 'a')
+				{
+					for (j = i; j < strlen(s) - 1; j++)
+					{
+						s[j] = s[j + 1];
+					}
+					s[j] = '\0';
+					i--;  //ca sa verifice toate caracterele
+
+				}
+				
+			}
+			break;
+		default:printf("opt gres");
+			break;
+		}
+	}
+
+	return 0;
+ }

@@ -1,0 +1,166 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+
+void citire(char sir[])
+{
+	getchar();  //e necesar pt citirea unui sir pentru a consuma caracterul \n (tasta Enter) din buffer-ul de intrare,
+	printf("sirul este=");
+	gets(sir);// este utilizată pentru citirea de șiruri de caractere pana intalneste /n
+}
+
+void afisare(char sir[])
+{
+	printf("%s", sir);
+}
+
+//void numarare(char sir[],char x)
+//{
+//	//getchar();
+//	int i,contor=0;
+//	for ( i = 0; i < strlen(sir); i++)
+//	{
+//		if (sir[i]== x)
+//			contor++;
+//
+//	}
+//	printf("caracterul a aparut de %d ori", contor);
+//}
+
+void inversulsirului(char sir[], char sir2[20])
+{
+	int j = 0;
+	int i;
+	for (i = strlen(sir) - 1; i >= 0; i--) //-1 sanu incepem de la termiantorul de sir
+	{
+		sir2[j] = sir[i];
+		j++;
+	}
+	sir2[j] = '\0'; //sa nu uitam sa adaugam terminatorul de sir
+	printf("%s\n", sir2);
+}
+
+void palindrom(char sir[], char sir2[20])
+{
+	int j = 0;
+	int i;
+	for (i = strlen(sir) - 1; i >= 0; i--) //-1 sanu incepem de la termiantorul de sir
+	{
+		sir2[j] = sir[i];
+		j++;
+	}
+	sir2[j] = '\0'; //sa nu uitam sa adaugam terminatorul de sir
+	printf("%s\n", sir2);
+
+	if (strcmp(sir, sir2) == 0)
+		printf("e sirul palindrom %s", sir);
+
+	else
+	{
+		printf("nu e sirul palindrom %s", sir);
+		for (i = strlen(sir) - 1; i >= 0; i--)
+		{
+			printf("*");
+		}
+	}
+	printf("\n");
+
+}
+
+void vocale(char sir[])
+{
+	int i, vocale = 0,consoane = 0,cifre = 0,spatii = 0;
+	for (i = 0; i < strlen(sir); i++)
+	{
+		if ((sir[i] == 'a') || (sir[i] == 'e') || (sir[i] == 'i') || (sir[i] == 'o') || (sir[i] == 'u') ||
+			(sir[i] == 'A') || (sir[i] == 'E') || (sir[i] == 'I') || (sir[i] == 'O') || (sir[i] == 'U'))
+			vocale++;
+		else if ((sir[i] > 'a') && (sir[i] < 'z') || (sir[i] > 'A') && (sir[i] < 'Z'))
+			consoane++;
+		else if ((sir[i] == ' '))
+			spatii++;
+		else if ((sir[i] > '0') || (sir[i] < '9'))
+			cifre++;
+	}
+	printf("\n");
+	printf("nr de voc,cons,spatii,cifre este %d,%d,%d,%d", vocale, consoane, spatii, cifre);
+}
+
+void stergere(char sir[])
+{
+	int j, i;
+	for (i = 0; i < strlen(sir); i++)
+	{
+		if (!(sir[i] >= 'a' && sir[i] <= 'z') && !(sir[i] >= 'A' && sir[j] <= 'Z'))
+		{
+			for (j = i; j < strlen(sir) - 1; j++)
+			{
+				sir[j] = sir[j + 1];
+			}
+			sir[j] = '\0';
+			i--;
+		}
+	}
+	puts( sir);  //este utilizată pt afișarea de șiruri de caractere pe ecran și adaugă un caracter newline la sf acestuia.
+}
+
+
+
+int main()
+{
+	int opt;
+	int i, n;
+	//char cuv[20];
+	char sir[20],sir2[20];
+	char x;
+
+
+	while (1)
+	{
+		system("Color 0B");
+		printf("\n1.citirea sirului\n");
+		printf("2.af sirului\n");
+		printf("3.numarati de cate ori apare un caracter de la tast are\n");
+		printf("4.creati un nou sir in case se salv inversului primului sir\n");
+		printf("5. sa se af sirul daca e palindrom , dc nu e se va afisa sirul cu *\n");
+		printf("6.sa se num cate voc,cons,cifre si spatii albe are sirul\n");
+		printf("7.stergeti toate caracterele din sir care nu s lit\n");
+		printf("0.iesire\n");
+		printf("opt ta e=");
+		scanf("%d", &opt);
+		switch (opt)
+		{
+		case 0:
+			exit(0);
+		case 1:
+			citire(sir);
+			break;
+		case 2:
+			afisare(sir);
+			break;
+		case 3:
+			/*printf("Introduceti un caracter: ");
+			scanf("%c", &x);
+			numarare(sir,x);*/
+			break;
+		case 4:
+			inversulsirului(sir, sir2);
+			break;
+		case 5:
+			palindrom(sir, sir2);
+			break;
+		case 6:
+			vocale(sir);
+			break;
+		case 7:
+			stergere(sir);
+			break;
+		default:printf("opt grs");
+			break;
+		}
+
+	}
+
+	return 0;
+}

@@ -1,0 +1,159 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<math.h>
+
+typedef struct playlist {
+	char nume[20];
+	int numar;
+	char gen[20];
+}P;
+
+void citire(P *play, int *nr)
+{
+	(*nr)++;
+	printf("dati nume playlist=");
+	scanf("%s", (play + *nr)->nume);
+	printf("dati nr mellodii=");
+	scanf("%d", &(play + *nr)->numar);
+	printf("dati gen melodie=");
+	scanf("%s", (play + *nr)->gen);
+
+}
+
+void afisare(P *play, int nr) {
+	printf("Nume: %s Numar:%d Gen: %s\n", (play + nr)->nume, (play + nr)->numar, (play + nr)->gen);
+}
+
+void afisGen(P *play, int nr, char g[20])
+{
+	int i;
+	for (i = 0; i <= nr; i++)
+	{
+		if (strcmp((play + i)->gen, g) == 0)
+			afisare(play, i);
+	}
+}
+
+void AfisNrMelod(P *play, int nr, int numar1)
+{
+	int i;
+	for (i = 0; i <= nr; i++)
+	{
+		if (((play + i)->numar) > numar1)
+			afisare(play, i);
+	}
+}
+
+void cautareNume(P *play, int nr, char caut[20])
+{
+	int i;
+	for (i = 0; i <= nr; i++)
+	{
+		if (strcmp((play + i)->nume, caut) == 0)
+			afisare(play, i);
+	}
+}
+
+void stergere(P *play, int *nr,char nume[20])
+{
+	int i, j;
+	for ( i = 0; i <=*nr ; i++)
+	{
+		if (strcmp((play + i)->nume, nume) == 0)
+		{
+			for (j = i; j <= *nr - 1; j++)
+				*(play + j) = *(play + j + 1);
+			(*nr)--;
+			i--;
+		}
+	}
+}
+
+void sortare(P*play, int *nr)
+{
+	P aux;
+	int i, k;
+	do {
+		k = 1; //prezumtia de adv
+		for (i = 0; i < *nr; i++)
+		{
+			if (strcmp((play + i)->gen, (play + i + 1)->gen) > 0)
+			{
+				aux = *(play + i);
+				*(play + i)= *(play + i+1);
+				*(play + i+1)=aux;
+				k = 0;
+
+			}
+		}
+	} while (!k);
+}
+
+int main()
+{
+	int nr, i,numar1;
+	int opt;
+	P play[50];
+	char g[30],elemc[20],numeS[20];
+	nr = -1;
+	do
+	{
+		system("Color 0B");
+		printf("1. Adaugarea\n");
+		printf("2. Afisarea tuturor playlisturilor de pe ytb\n");
+		printf("3. Afisarea playlisturilor de un anumit gen\n");
+		printf("4. Afisarea playlisturilor cu un numar de melodii mai mare decat un numar citit de la tastatura\n");
+		printf("5. Cautarea unui playlist dupa nume\n");
+		printf("6. Stergerea unui playlist dupa nume\n");
+		printf("7. Sortarea playlistului dupa gen\n");
+		printf("0. Iesire !\n");
+		printf("opt e=");
+		scanf("%d", &opt);
+		switch (opt)
+		{
+		case 0:
+			exit(0);
+		case 1:
+			citire(play, &nr);
+			break;
+		case 2:
+			for (i = 0; i <= nr; i++)
+				afisare(play, i);
+			break;
+		case 3:
+			printf("Dati genul cautat: ");
+			scanf("%s", g);
+			afisGen(play, nr, g);
+			break;
+		case 4:
+			printf("dati nr de mel=");
+			scanf("%d", &numar1);
+			AfisNrMelod(play, nr, numar1);
+			break;
+		case 5:
+			printf("dati nume melodie cautate=");
+			scanf("%s", elemc);
+			cautareNume(play, nr, elemc);
+			break;
+		case 6:
+			printf("dati nume de sters melodie=");
+			scanf("%s", numeS);
+			stergere(play, &nr, numeS);
+			for (i = 0; i <= nr; i++)
+				afisare(play, i);
+			break;
+		case 7:
+			sortare(play, &nr);
+			for (i = 0; i <= nr; i++)
+				afisare(play, i);
+			break;
+		default:printf("opt grs");
+			break;
+		}
+	} while (1);
+
+
+	system("pause");
+	return 0;
+}

@@ -1,0 +1,164 @@
+/*1. Fie o mulțime M de n numere întregi, date de utilizator de la tastatură.
+Realizați un meniu interactiv cu următoarele opțiuni:
+0. Ieșire.
+1. Afișarea elementelor mulțimii în ordine crescătoare.
+2. Să se șteargă ultimul element din mulțime, apoi să se afișeze restul elementelor
+din vector.
+3. Să se afișeze toate elementele mulțimii care sunt o putere a lui 2. Se vor folosi
+operații pe biți.*/
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+ void sortare(int m[], int n)
+{
+	int i, j, x;
+	for (i = 0; i < n; i++)
+		for (j = i + 1; j < n; j++)
+			if (m[i] > m[j])
+			{
+				x = m[i];
+				m[i] = m[j];
+				m[j] = x;
+			}
+	for (i = 0; i < n; i++)
+		printf("m[%d]=%d  ", i, m[i]);
+}
+
+ void putere2(int *m, int n)
+ {
+	 int i, x;
+	 for (i = 0; i < n; i++)
+	 {
+		 x = m[i];
+		 if (!(x&(x - 1)))
+			 printf("%d  ", m[i]);
+
+	 }
+ }
+
+void afisare(int *m,int nr)
+{
+	int i,n;
+	for ( i = 0; i < nr; i++)
+	{
+		printf("%d ", m[i]);
+	}
+}
+
+void stergere(int *m, int *n)  //stergere ultimul caracter
+{
+	int i, j;
+	(*n)--;
+	for ( i = 0; i < *n; i++)
+	{
+		printf("m[%d]=%d  ", i, m[i]);
+
+	}
+}
+
+void stergereElem(int *m, int *n)
+{
+	int i, j, elem;
+	printf("elem cautat=");
+	scanf("%d", &elem);
+	for ( i = 0; i < *n; i++)
+	{
+		if(m[i]==elem)
+			for (  j= i;  j< *n-1; j++)
+			{
+				m[i] = m[i + 1];
+				i--;
+				(*n)--;
+			
+			}
+	}
+
+}
+
+void nrpar(int *m, int n)
+{
+	int x, i;
+	for (i = 0; i < n; i++)
+	{
+		x = m[i];
+		if ((x & 1) == 1)
+			printf("nr impare=%d",m[i]);
+		else printf("nr par=%d",m[i]);
+	}
+}
+
+//void nrpoz(int *m, int n)
+//{
+//	int x, i;
+//	for (i = 0; i < n; i++)
+//	{
+//		x = m[i];
+//		if (((x << 31) & 1) == 1)
+//			printf("nr neg=%d", m[i]);
+//		else 	printf("nr poz=%d", m[i]);
+//	}
+//}
+int main()
+{
+	int opt;
+	int n, i;
+	int *m;
+	printf("introduceti nr de elem=");
+	scanf("%d", &n);
+	m = (int*)malloc(n * sizeof(int));
+	for ( i = 0; i < n; i++)
+	{
+		printf("m[%d]=", i + 1);
+		scanf("%d", &m[i]);
+
+	}
+	while (1)
+	{
+		system("color 9");
+		printf("\n0.Iesire\n");
+		printf("1.Afisarea elementelor multimii în ordine crescatoare\n");
+		printf("2.Sa se stearga ultimul element din multime, apoi sa se afiseze restul elementelor din vector\n");
+		printf("4.Sa se afiseze toate elementele multimii care sunt o putere a lui 2. Se vor folosi operatii pe biti\n");
+		printf("5.elem sters\n");
+		printf("6.paritatea nr\n");
+		printf("7.nr poz sau neg\n");
+
+		printf("Introduceti optiunea:");
+		scanf("%d", &opt);
+		switch (opt)
+		{
+		case 0:
+			exit(0);
+		case 1:
+			//afisareCresc(m, n);
+			afisare(m,n);
+			break;
+		case 2:
+			//sortare(m, n);
+			//afisare(m, n);
+			stergere(m, &n);
+			break;
+		case 3:sortare(m, n);
+			break;
+		case 4:
+			putere2(m, n);
+			break;
+		case 5:
+			stergereElem(m, &n);
+			afisare(m, n);
+			break;
+		case 6:
+			nrpar(m, n);
+			break;
+		case 7:
+			//nrpoz(m, n);
+			break;
+		default:printf("opt grs");
+			break;
+		}
+	}
+	system("pause");
+	return 0;
+}

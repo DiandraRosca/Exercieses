@@ -1,0 +1,188 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+enum Pozitii { DIRECTOR, SECRETAR, PROGRAMATOR, TESTER };
+
+typedef struct Angajat {
+	char nume_angajat[20];
+	enum Pozitii pozitie;
+	int vechime;
+	double salar_baza;
+}Angajat;
+
+int validare_nume(char *x) {
+	for (int i = 0; x[i] != '\0'; i++) {
+		if (x[i]<'A' || x[i]> 'Z') {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+int validare_salar(enum Pozitii pozitie, double salar_baza) {
+	switch (pozitie)
+	{
+	case DIRECTOR:
+		return salar_baza >= 9000 && salar_baza <= 10000;
+		break;
+	case SECRETAR:
+		return salar_baza >= 4000 && salar_baza <= 5000;
+		break;
+	case PROGRAMATOR:
+		return salar_baza >= 7000 && salar_baza <= 9000;
+		break;
+	case TESTER:
+		return salar_baza >= 5000 && salar_baza <= 6000;
+		break;
+	default:
+		//return 0;
+		break;
+	}
+
+}
+
+void citire_angajat(Angajat *a, int *n) {
+	(*n)++;
+	do {
+		printf("Nume: ");
+		scanf("%s", (a + *n)->nume_angajat);
+	} while (!validare_nume((a + *n)->nume_angajat));
+
+	printf("Pozitia(0, 1, 2, 3):");
+	scanf("%d", &(a + *n)->pozitie);
+
+	printf("Vechime:");
+	scanf("%d", &(a + *n)->vechime);
+
+	do {
+		printf("Salar baza:");
+		scanf("%lf", &(a + *n)->salar_baza);
+	} while (!validare_salar((a + *n)->pozitie, (a + *n)->salar_baza));
+}
+
+void sortare_descrescator(Angajat *a, int n) {
+	int i, k;
+	Angajat aux;
+	do {
+		k = 1;
+		for (i = 1; i <= n; i++)
+		{
+			if ((a + i - 1)->salar_baza > (a + i)->salar_baza)
+			{
+				aux = *(a + i);
+				*(a + i) = *(a + i - 1);
+				*(a + i - 1) = aux;
+				k = 0;
+			}
+		}
+	} while (!k);
+
+}
+
+void putere2(Angajat *a, int n)
+{
+	int x, i;
+	for (i = 0; i < n; i++)
+	{
+		x = (a + i)->nume_angajat;
+		if (!(x&(x - 1)))
+			printf("%s", (a + i)->nume_angajat);
+	}
+}
+
+void afisare_angajati(Angajat *a, int *n) {
+
+	for (int i = 0; i <= n; i++) {
+		printf("\n");
+		printf("Nume angajat: %s\n", (a + i)->nume_angajat);
+		printf("Pozitie: ");
+		switch ((a + i)->pozitie)
+		{
+		case DIRECTOR:
+			printf("Director\n");
+			break;
+		case SECRETAR:
+			printf("Secretar\n");
+			break;
+		case PROGRAMATOR:
+			printf("Programator\n");
+			break;
+		case TESTER:
+			printf("Testor\n");
+			break;
+		default:
+			break;
+		}
+		printf("Vechime: %d\n", (a + i)->vechime);
+		printf("Salariu de baza: %.2lf\n", (a + i)->salar_baza);
+		printf("Salariu brut: %.2lf\n", ((a + i)->salar_baza) + 0.15*((a + i)->salar_baza) + 100 * ((a + i)->vechime));
+
+	}
+}
+
+//void copiere(Angajat *a, int n)
+//{
+//	int i;
+//	char V[100][100];
+//	V = (char*)malloc((n + 1) * sizeof(char));// n+1 pt ca atatea masini avem, fiindca n =-1 in main //aloc mem fiindca nuj cate masini vor fi citte
+//	if (V == NULL)
+//	{
+//		printf("ex o eroare la aloc de mem");
+//		exit(0);
+//	}
+//	for ( i = 0; i <=n ; i++)
+//	{
+//		strcpy(V[i], putere2((a + i)->nume_angajat));
+//	}
+//	for (i = 0; i <= n; i++)
+//	{
+//		printf("%s", V[i]);
+//	}
+//}
+
+
+int main() {
+	Angajat a[30];
+	int n = -1;
+	int option = 0;
+	char v[50][50];
+
+
+
+	do {
+		printf("\nMeniu:\n");
+		printf("\n0.iesire\n");
+		printf("1. Adauga angajat\n");
+		printf("2. Afisare angajati \n");
+		printf("3. Vector \n");
+		printf("4. putere a lui 2-nume angajat \n");
+		printf("Optiunea aleasa: ");
+		scanf("%d", &option);
+		printf("\n");
+
+		switch (option)
+		{
+		case 0:
+			exit(0);
+		case 1:
+			citire_angajat(a, &n);
+			break;
+		case 2:
+			afisare_angajati(a, n);
+			break;
+		case 3:
+			sortare_descrescator(a, n);
+			afisare_angajati(a, n);
+			break;
+		case 4:
+			printf("aceste nume sunt = cu o putere a lui 2=");
+			putere2(a, n);
+			break;
+		default:printf("opt grs");
+			break;
+		}
+
+	} while (option != 4);
+}

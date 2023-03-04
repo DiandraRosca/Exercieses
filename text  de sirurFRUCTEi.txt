@@ -1,0 +1,221 @@
+/*
+	Fire un text format din maxim 50 de fructe, care au lungimea maxima de 20 de caractere
+	Realizati un meniu cu urmatoarele optiuni:
+	0.Iesire
+	1.Citirea a n fructe de la tastatura
+	2.Afisarea fructelor citite
+	3.Cautarea fructelor care sunt egale cu un fruct citit de la tastatura
+	4.Sortarea fructelor in ordine invers alfabetica
+	5.Sa se afiseze sub forma unei matrice patratice de ordinul dat de nr de fructe o matrice ce are pe diagonala secundara lungimea maxima
+a fructelor din text, iar pe restul elementelor 0.
+	6.Sa se afiseze toate fructele ce au lungimea egala cu o putere a lui 2
+	7.Sa se inlocuiasca toate carcaterele 'a' din fructe cu '?'
+	8.Sa se stearga toate fructele care sunt egale cu un fruct citit de la tastatura
+	OBSV
+		*Numele primului fruct este dat automat fiind egal cu mar
+		*Numele ultimului fruct este dat automat fiind egal cu cireasa
+		*Toate fructele sunt formate din litere mici
+		*Nu este folosirea vectorlui de structuri
+		(avem sir de siruri)
+*/
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int ValidareLitmici(char *s)//
+{
+	int i;
+	for (i = 0; i < strlen(s); i++)
+	{
+		if (!(s[i] >= 'a'&& s[i] <= 'z'))
+			return 0;
+	}
+	return 1;
+}
+int VerificarePutere(int x)
+{
+	//trebuie sa parcurgem toti biti  si calculam cati de 1 gasim
+	int i, k = 0;
+	for (i = 31; i >= 0; i--)
+	{
+		if ((x >> i) & 1 == 1)
+			k++; // vrem sa vedem fiecare bit ce valoare are asa ca numarul meu
+		// acel sir de biti, siftam i cu 31 de poziti avem acces la primul bit pana ajungem la ultimii 4
+	}
+	if (k == 1)
+		return 1;
+	else return 0;
+}
+void Stergere(char t[][20], int *nr, char elems[] )
+{
+	int i,j,k=0;
+	for(i=0;i<*nr;i++)
+		if (!strcmp(t[i], elems))
+		{
+			k++;// cand l am gasit il crestem pe k
+			for (j = i; j < *nr - k; j++)
+			{
+				strcpy(t[j], t[j + 1]);
+				
+			}
+			i--;
+		}
+	*nr = *nr - k;
+}
+void InlocuireCarctere(char t[][20], int nr)
+{
+	int i,k;
+	for (i = 0; i < nr; i++)
+	{
+		for (k = 0; k < strlen(t[i]); k++)
+			if (t[i][k] == 'a') t[i][k] = '?';
+	}
+
+}
+void FructePutere(char t[][20], int nr)
+{
+	int i;
+	for (i = 0; i < nr; i++)
+	{
+		if (VerificarePutere(strlen(t[i])))
+			printf("%s \n", t[i]);
+	}
+}
+void MatriceMaxFructe(char t[][20], int nr)
+{
+	int i, max, j;
+	max = strlen(t[0]);
+	for (i = 1; i < nr; i++)
+	{
+		if (strlen(t[i]) > max) max = strlen(t[i]);
+	}
+	
+	for (i = 0; i < nr; i++)
+	{
+		for (j = 0; j < nr; j++)
+		{
+			if (i + j == nr - 1)
+				printf("%3d", max);
+			else printf("  0");
+		}
+		printf("\n");
+	}
+}
+void SortareFructe(char t[][20], int nr)
+{
+	int i, k;
+	char aux[20];
+	do {
+		k = 1;
+		for (i = 1; i < nr;i++)
+			if (strcmp( t[i - 1], t[i]) < 0)
+			{
+				strcpy(aux, t[i]);
+				strcpy(t[i], t[i - 1]);
+				strcpy(t[i - 1], aux);
+				k = 0;
+			}
+	} while (!k);
+
+}
+void CautareFructe(char t[][20], int nr, char f[])
+{
+	int i;
+	for (i = 0; i < nr; i++)
+	{
+		if (strcmp(t[i], f)==0)
+			printf("%s \t", t[i]);
+		
+	}
+}
+void AfisareFrcute(char t[][20], int nr)
+{
+	int i;
+	for (i = 0; i < nr; i++)
+	{
+		printf("%s \n", t[i]);
+	}
+}
+void CitireFrcute(char t[][20], int nr)// citim prin index 2 deja le avem (mar,cireasac)
+{
+	int i;
+	strcpy(t[0], "mar");
+	strcpy(t[nr - 1],"cireasa" );//pentru ca pornim de pe pozitia 0
+	for (i = 1; i < nr - 1; i++)
+	{
+		do {
+			printf("Introduceti fructul %d ", i + 1);
+			scanf("%s", t[i]);
+		} while (!(ValidareLitmici(t[i])));
+
+	}
+
+}
+int main()
+{
+	int opt;
+	char text[50][20];
+	char f[20];
+	int n;
+	do
+	{
+		system("Color 0B");
+		printf("\nMeniu: \n");
+		printf("0.Iesire\n");
+		printf("1.Citirea a n fructe de la tastatura\n");
+		printf("2.Afisarea fructelor citite\n");
+		printf("3.Cautarea fructelor care sunt egale cu un fruct citit de la tastatura\n");
+		printf("4.Sortarea fructelor in ordine invers alfabetica\n");
+		//trebuie sa ne scoatem maximul pentru lungime
+		printf("5.Sa se afiseze sub forma unei matrice patratice de ordinul dat de nr de fructe o matrice ce are pe diagonala secundara lungimea maximaa fructelor din text, iar pe restul elementelor 0\n");
+		//Mai intaia facem o functie care verifica daca un numar este egal cu o putere a lui 2
+		printf("6.Sa se afiseze toate fructele ce au lungimea egala cu o putere a lui 2\n");
+		printf("7.Sa se inlocuiasca toate carcaterele 'a' din fructe cu '?'\n");
+		printf("8.Sa se stearga toate fructele care sunt egale cu un fruct citit de la tastatura\n");
+		printf("Optiunea dumneavoastra este: ");
+		scanf("%d", &opt);
+		switch (opt)
+		{
+		case 0:
+			exit(0);
+		case 1:
+
+			printf("Introduceti valuarea lui n (nr de fructe): ");
+			while (scanf("%d", &n)!=1 && getchar()!= "\n");
+			CitireFrcute(text, n);
+			break;
+		case 2:
+			AfisareFrcute(text, n);
+			break;
+		case 3:
+			printf("Introduceti fructul pe care-l cautati: ");
+			scanf("%s", f);
+			CautareFructe(text, n, f);
+			break;
+		case 4:
+			SortareFructe(text, n);
+			AfisareFrcute(text, n);
+			break;
+		case 5:
+			MatriceMaxFructe(text, n);
+			break;
+		case 6:
+			FructePutere(text, n);
+			break;
+		case 7:
+			InlocuireCarctere(text, n);
+			AfisareFrcute(text, n);
+			break;
+		case 8:
+			printf("Introduceti fructul pe care-l stergeti: ");
+			scanf("%s", f);
+			Stergere(text, &n, f);
+			AfisareFrcute(text, n);
+			break;
+		default: printf("Introduceti o optiune valida!");
+			break;
+		}
+	} while (1);
+	system("pause");
+	return 0;
+}

@@ -1,0 +1,123 @@
+//un sir de caractere ce exprima un cuvant
+//se va repeta citirea pana prima lit va fi una mare
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+int main()
+{
+	char sir[20],aux,sir2[20],sir3[20];
+	int opt,j,k=0, i,vocale,contor=0;
+	while (1)//do{
+	{
+
+		printf("\n1.citirea cuv\n");
+		printf("2.af cuv\n");
+		printf("3.numarati cate vocale are\n");
+		printf("4.sortarea alfabetica\n");
+		printf("5. se mai cit un sir de caract de la tast,verif dc cele 2 siruri sunt egale(strcmp)\n");
+		printf("6.se mai cit un sir de caract de la tast,verif dc cele 2 siruri sunt egale(fara fct)\n");
+		printf("7.numarati cate cuv sunt in sir\n");
+		printf("0.iesire\n");
+		printf("opt ta e=");
+		scanf("%d", &opt);
+		switch (opt)
+		{
+		case 1:
+			///*k = 0;
+			//k1 = 0;
+			//do
+			//{
+			//	printf("cuv dat e=");
+			//	if (k1 == 0)
+			//	{
+			//		getchar();
+			//		k1++;
+			//	}
+			//	gets(sir);
+			//	if ((sir[strlen(sir) - 1] >= 'a' && (sir[strlen(sir) - 1] <= 'z'))
+			//		k = 1;
+			//	ok = 1;*/
+			//}while(!k)
+			printf("sirul este=");
+			scanf("%s", &sir);
+				break;
+		case 2:
+			printf("cuv este=");
+			puts(sir);
+			break;
+		case 3:
+			vocale = 0;
+			for (i = 0; i < strlen(sir); i++)
+				if ((sir[i] == 'a') || (sir[i] == 'e') || (sir[i] == 'i') || (sir[i] == 'o') || (sir[i] == 'u') ||
+					(sir[i] == 'A') || (sir[i] == 'E') || (sir[i] == 'I') || (sir[i] == 'O') || (sir[i] == 'U'))
+					vocale++;
+			printf("\n in sir sunt %d vocale", vocale);
+				break;
+		case 4:
+			do {
+				k = 1; //plecam de la prezumtia de adv
+				for (i = 1; i < strlen(sir); i++)
+					if (sir[i - 1] > sir[i])
+					{
+						aux = sir[i];
+						sir[i] = sir[i - 1];
+						sir[i - 1] = aux;
+						k = 0;
+					}
+			} while (!k);
+			printf("cuv sortat e=");
+			puts(sir);
+			
+				break;
+		case 5:
+			printf("al doilea sir este=");
+			scanf("%s", &sir2);
+			printf("cuv este=");
+			puts(sir);
+			if (strcmp(sir, sir2) == 0)
+				printf("sir==sir2");
+			else
+				printf("sir, sir 2 nu sunt egale");
+
+			break;
+		case 6:
+			k = 1;
+			printf("al doilea sir este=");
+			scanf("%s", &sir2);
+			printf("cuv este=");
+			puts(sir2);//gets(sir2);
+			if (strlen(sir) == strlen(sir2)) //pt ca daca introduceam abc si abcd dadeau la fel, trebuie verificata si lungimea
+			{
+				for (i = 1; i < strlen(sir); i++)
+					if (sir[i] != sir2[i])
+						k = 0;
+			}
+			else
+				k = 0;
+			if (k == 1) //if(k)
+				printf("sirurile sunt egale");
+			else
+				printf("sirurile nu sunt egale");
+			break;
+		case 7:
+			/*if (k)
+			{
+				k = 1;
+				for (i = 1; i < strlen(sir); i++)
+					if ((sir[i] == ' ') || (sir[i] == '\t') || (sir[i] == '\n'))
+						k++;
+				printf("\n sunt %d cuv in sir",k);
+			}*/
+		
+			break;
+		case 0:
+			exit(0);
+		default:printf("opt grs");
+			break;
+		}
+	}//}while(1);
+	system("pause");
+
+	return 0;
+}

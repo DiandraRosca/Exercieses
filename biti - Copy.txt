@@ -1,0 +1,100 @@
+/*1. Fie o mulțime M de n numere întregi, date de utilizator de la tastatură.
+Realizați un meniu interactiv cu următoarele opțiuni:
+0. Ieșire.
+1. Afișarea elementelor mulțimii în ordine crescătoare. 
+2. Să se șteargă ultimul element din mulțime, apoi să se afișeze restul elementelor 
+din vector.
+3. Să se afișeze toate elementele mulțimii care sunt o putere a lui 2. Se vor folosi 
+operații pe biți.*/
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int validare(int x)
+{
+	return x < 0;
+}
+void schimb(int a, int b)
+{
+	int x;
+	x = a;
+	a = b;
+	b = x;
+}
+void afisare_crescator(int m[],int n)
+{
+	int i, j,x;
+	for (i = 0; i < n; i++)
+		for (j = i + 1; j < n; j++)
+			if (m[i] > m[j])
+			{
+				x = m[i];
+				m[i] = m[j];
+				m[j] = x;
+			}
+	for (i = 0; i < n; i++)
+		printf("m[%d]=%d  ", i, m[i]);
+}
+void stergere_si_afisare(int m[], int *n)
+{
+	int i, j;
+	*n=*n-1;
+	for (i = 0; i < *n; i++)
+		printf("m[%d]=%d  ", i, m[i]);
+
+}
+void afisare_putere2(int m[],int n)
+{
+	int x,i;
+	for (i = 0; i < n; i++)
+	{
+		x = m[i];
+		if(!(x&(x-1)))
+			printf("%d  ", m[i]);
+
+	}
+}
+int main()
+{
+	int opt, n, i;
+	printf("Introduceti nr de elemente:");
+	scanf("%d", &n);
+	int *m = malloc(n * sizeof(int));
+	for (i = 0; i < n; i++)
+	{
+		do
+		{
+			printf("m[%d]=", i);
+			scanf("%d", &m[i]);
+		}while (validare(m[i]));
+	}
+	while (1)
+	{
+		printf("\n0.Iesire\n");
+		printf("1.Afisarea elementelor multimii în ordine crescatoare\n");
+		printf("2.Sa se stearga ultimul element din multime, apoi sa se afiseze restul elementelor din vector\n");
+		printf("3.Sa se afiseze toate elementele multimii care sunt o putere a lui 2. Se vor folosi operatii pe biti\n");
+		printf("Introduceti optiunea:");
+		scanf("%d", &opt);
+		switch (opt)
+		{
+		case 0:
+			free(m);
+			exit(0);
+			break;
+		case 1:
+			afisare_crescator(m, n);
+			break;
+		case 2:
+			stergere_si_afisare(m, &n);
+			break;
+		case 3:
+			afisare_putere2(m, n);
+			break;
+		default:
+			printf("Optiune gresita");
+			break;
+		}
+	}
+}

@@ -1,0 +1,223 @@
+//sa se scrie un program in c care tine evidenta masinilor dintr un parc auto.
+//fiecare masina e descrica de: marca,model, an de fabric, culoare,pret
+// -sa se realizeze un meniu intersctic cu urm opt
+// 1. citirea unei masini de la tast.
+// 2. af masinilor din parcul auto
+// 3. cautarea unei masini dupa cul
+// 4. af tuturor  masinilor cu un pret < decat cel introdus  de la tast
+// 5. af masinilor in ord cresc dupa anul de fabric
+// 6. sa se copieze intr un vector toti aniii de fabric. ai masinilor, apoi sa se afiseze vectorul
+// 7.sa se puna pe diag princip. a unei matrici anul maxim al masinilor, iar pe restul 0
+// - ordinul matrcii e dat de nr de masini
+// 8. sa se stearga prima masina cu pretul mai mic decat un pret de la tast
+// 9. iesire
+// obs:
+// -1.marca masinii e considerata corecta dc prima lit e lit mare
+// 2. anul de fabricatie al masinii e citit corect dc face parte din interv(1995, 2021)
+// 3.pretul masinii e dat automat = cu valoare ascii zecimala a primului caracter al marcii * 10
+// 
+
+//afisarea are o eroare mica nuj dc
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h> //pt cuv
+
+typedef struct parc_auto {
+	char marca[20];
+	char model[20];
+	int an;
+	char cul[20];
+	int pret;
+}masini;  //tip de data de tipul parcul auto
+
+void citireMasini(masini *m, int *n) {  
+	(*n)++; //vrem sa crestem valoarea lui n deci (*n)
+	do {
+		printf("marca=");  scanf("%s", (m + *n)->marca);
+	} while (!validareMarca((m + *n)->marca[0]));
+	printf("model=");  scanf("%s", (m + *n)->marca);
+	do {
+	printf("an=");  scanf("%d", &(m + *n)->an);
+	} while (!validareAn((m + *n)->an));
+	printf("culoare=");  scanf("%s", (m + *n)->cul);
+	(m + *n)->pret = (m + *n)->marca[0] * 10; //obsv 3
+	printf("pret=%d", (m + *n)->pret);
+}
+
+int validareMarca(char x)
+{
+	return(x >= 'A' && x <= 'Z');
+}
+
+int validareAn(int x)
+{
+	return(x >= 1995 && x <= 2021);
+}
+
+void afisareMasini(masini *m, int n)
+{
+	int i;
+	for ( i = 0; i <= n; i++)
+		printf("%s, %s, %d, %s, %d\n", (m + i)->marca, (m + i)->model, (m + i)->an, (m + i)->cul, (m + i)->pret);
+}
+
+void cautareCul(masini *m, int n,char *cul)
+{
+	int i;
+	for (i = 0; i <= n; i++)
+		if (strcmp((m + i)->cul, cul) == 0)
+		{
+			printf("%s, %s, %d, %s, %d\n", (m + i)->marca, (m + i)->model, (m + i)->an, (m + i)->cul, (m + i)->pret);
+			break;
+		}
+}
+
+void masiniIeftine(masini *m, int n,int pret) 
+{
+	
+	int i;
+	for (i = 0; i <= n; i++)
+		if((m+i)->pret< pret )    //accesam pretul foecarei masini si verf dc e mai mic decat pretl dat de la tast
+		printf("%s, %s, %d, %s, %d\n", (m + i)->marca, (m + i)->model, (m + i)->an, (m + i)->cul, (m + i)->pret);
+	
+}
+
+void ordindeCresc(masini *m, int n)
+{
+
+	int i,k;
+	masini aux;
+	do {
+		k = 1;
+		for(i=1;i<=n;i++)
+			if ((m + i - 1)->an > (m + i)->an)
+			{
+				aux = *(m + i);
+				*(m + i) = *(m + i - 1); //valorile lor se schimba nu adresele
+				*(m + i - 1) = aux;
+				k = 0;
+			}
+	} while (!k);
+	
+}
+
+void vectorAni(masini *m, int n)
+{
+	int i;
+	int* v;
+	v = (int*)malloc((n+1) * sizeof(int));// n+1 pt ca atatea masini avem, fiindca n =-1 in main //aloc mem fiindca nuj cate masini vor fi citte
+	if (v == NULL)
+	{
+		printf("ex o eroare la aloc de mem");
+		exit(0);
+	}
+	for ( i = 0; i <= n; i++)
+	{
+		v[i] = (m + i)->an;
+		printf("%d ", v[i]);
+	}
+	free(v);
+}
+
+void matricePretMax(masini *m, int n)
+{
+	int i, j;
+	int max = 1995; //fiindca nu se poate mai mic decat atat
+	for (i = 0; i <= n; i++)
+		if ((m + i)->an > max)
+			max = (m + i)->an;
+
+	for ( i = 0; i <=n; i++)
+	{
+		for (j = 0; j <= n; j++)
+			if (i == j)
+				printf("%d ", max);
+			else printf("0 ");
+			printf("\n");
+	   
+	}
+
+}
+
+//void stergere(masini *m, int *n,int pret)  
+//{
+//	int i,j;
+//	for ( i = 0; i <=*n; i++)
+//		if ((m + i)->pret < pret)
+//		{
+//			for ( j = i; j <= *n-1; j++)
+//				{
+//				*(m + j) = *(m + j + 1);
+//				break; //fiindca vrem sa stergem o singura masina
+//				}
+//					i--;
+//		}
+//	*n = *n - 1; //noua valoare lui n 
+//	
+//}
+
+int main()
+{
+	char culoare[20];
+	masini m[30];  //vector de 30 masini
+	int n = -1; //nou ne creste si direct prima masina are index 1
+	int opt,pret_max;
+	while (1)
+	{
+		system("Color 0B");
+		printf("\n1.citire\n");
+		printf("2.afisare\n");
+		printf("3. cautarea unei masini dupa cule\n");
+		printf("4. af tuturor  masinilor cu un oret < decat cel introdus  de la tast\n");
+		printf("5. af masinilor in ord cresc dupa anul de fabric\n");
+		printf("6. sa se copieze intr un vector toti aniii de fabric. ai masinilor, apoi sa se afiseze vectorul\n");
+		printf("7. sa se puna pe diag princip. a unei matrici anul maxim al masinilor, iar pe restul 0\n");
+		printf("8. sa se stearga prima masina cu pretul mai mic decat un pret de la tast\n");
+		printf("9.iesire\n");
+		printf("dati opt=\n");
+		scanf("%d", &opt);
+		switch (opt)
+		{
+		case 1:
+			citireMasini(m, &n);
+			break;
+		case 2:
+			afisareMasini(m, n);
+			break;
+		case 3:
+			printf("cul pe care o cautati=");
+			scanf("%s", culoare); //fara & ca e vector de sir cul
+			cautareCul(m, n, culoare);
+			break;
+		case 4:
+			printf("pretul maxim =");
+			scanf("%d", &pret_max);
+			masiniIeftine(m, n, pret_max);
+			break;
+		case 5:
+			ordindeCresc(m, n);
+			afisareMasini(m, n);
+			break;
+		case 6:
+			vectorAni(m, n);
+			break;
+		case 7:
+			matricePretMax(m, n);
+
+			break;
+		case 8:
+			/*printf("pret de stergere=");
+			scanf("%d ", &pret_max);
+			stergere(m, &n, pret_max);
+			afisareMasini(m, n);*/
+			break;
+		case 9:
+			exit(0);
+		default:printf("opt grs");
+			break;
+		}
+
+	}
+	system("pause");
+	return 0;
+}

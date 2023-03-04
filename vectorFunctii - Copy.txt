@@ -1,0 +1,134 @@
+//prin functii
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+void citire(int v[], int *n) {    //vectorul si nr de elem transmitem cu pointeri altfel n u e neinitializat
+	int i;
+	printf("dati nr de elem=");
+	scanf("%d", n);
+	for (i = 0; i < *n; i++)
+	{
+		printf("%d=", i+1);
+		scanf("%d", &v[i]);
+	}
+}
+
+void afisare(int v[], int n)
+{
+		printf("%d ", v[i]);
+	
+}
+
+void sortare(int v[], int n)
+{
+	int i, k, aux;
+	do {
+		k = 1;
+		for (i = 0; i < n - 1; i++)
+		{
+			if (v[i] > v[i + 1])
+				{
+					aux = v[i];
+					v[i] = v[i + 1];
+					v[i + 1] = aux;
+					k = 0;
+				} 
+				/*v[i] = v[i] ^ v[i + 1];
+				v[i + 1] = v[i] ^ v[i + 1];
+				v[i] = v[i] ^ v[i + 1];*/
+			
+		}
+	} while (!k);
+}
+
+int cautare(int v[], int n)
+{
+	int i, x;
+	printf("dati elem cautat=");
+	scanf("%d", &x);
+	for ( i = 0; i < n; i++)
+	{
+		if (v[i] == x)
+			return i;  //va returna prima pozitie unde se afla nr u nostru cautat
+	}
+	return 0; //in cazul in care nu gasim nr u cautat se va iesi din functie 
+}
+
+void stergere(int v[], int *n)
+{
+	int j,i,y;
+	printf("dati elem de sters=");
+	scanf("%d", &y);
+	for ( i = 0; i < *n; i++)
+	{
+		if (v[i] == y)
+		{
+			for ( j = i; j <*n-1 ; j++)
+				v[j] = v[j + 1]; 
+				(*n)--; //n=n-1;
+				i--;
+		}
+	}
+}
+
+int main()
+{
+	int i,n,v[10],ok,caut;
+	int opt;
+	ok = 0; //fals
+	while (1)
+	{
+		printf("\n1.citirea unui vectori\n");
+		printf("2.afisare\n");
+		printf("3. sortare ord cresc\n");
+		printf("4.cautarea unui elem dat de la tast cu mentionarea primei aparitii\n");
+		printf("5.stergerea unui elem dat de la tast\n");
+		printf("0.iesire\n");
+		printf("dati opt=");
+		scanf("%d", &opt);
+		switch (opt)
+		{
+		case 1:
+			ok = 1;  //adv
+			citire(v, &n);
+			break;
+		case 2:
+			if (ok) {
+				for ( i = 0; i < n; i++)
+					afisare(v, i);
+			}
+			break;
+		case 3:
+			if (ok) {
+				sortare(v, n);
+				for (i = 0; i < n; i++)
+					afisare(v, i);
+			}
+			break;
+		case 4:
+			if (ok) {
+				caut = cautare(v, n); //sa nu mi apeleze functia de 2 ori si sa mi scire de 2 ori acelasi lucru
+				if (caut!= 0)
+					printf("\npozitia la care se gaseste elem este %d", caut+1);
+				else
+					printf("\nelem nu se gaseste");
+				
+
+			}
+			break;
+		case 5:
+			if (ok) {
+				stergere(v, &n);     //de tip pointer altfel nu mi sterge n u si raman tot cate elemente introducem la inceput si doar mi l multiplica
+					for (i = 0; i < n; i++)
+						afisare(v, i);
+			}
+			break;
+		case 0:
+			exit(0);
+		default:printf("opt grs");
+			break;
+		}
+	}
+	return 0;
+}
